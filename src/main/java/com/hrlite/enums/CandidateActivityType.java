@@ -1,0 +1,15 @@
+package com.hrlite.enums;
+
+public enum CandidateActivityType {
+    APPLICATION_RECEIVED,
+    STAGE_CHANGED,
+    INTERVIEW_SCHEDULED,
+    INTERVIEW_COMPLETED,
+    FEEDBACK_ADDED,
+    OFFER_SENT,
+    OFFER_ACCEPTED,
+    OFFER_REJECTED,
+    NOTE_ADDED,
+    CANDIDATE_REJECTED,
+    CANDIDATE_HIRED
+}

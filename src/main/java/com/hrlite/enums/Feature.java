@@ -1,0 +1,41 @@
+package com.hrlite.enums;
+
+public enum Feature {
+    // FREE plan features
+    EMPLOYEES,
+    DIRECTORY,
+    BASIC_LEAVES,
+    BASIC_PAYROLL,
+    LETTER_TEMPLATES_BASIC,
+    SELF_BOARDING,
+    ANNOUNCEMENTS,
+    TEAM_AVAILABILITY,
+    POLLS,
+
+    // STARTER plan features
+    FULL_PAYROLL,
+    ALL_LETTER_TEMPLATES,
+    BULK_LETTERS,
+    LEAVE_ANALYTICS,
+    BIRTHDAY_ALERTS,
+    AUDIT_TRAIL,
+    EXPORTS,
+    SALARY_REVISIONS,
+    HIRING,
+
+    // GROWTH plan features
+    DOCUMENT_EXPIRY,
+    ADVANCED_RBAC,
+    EMPLOYEE_SELF_SERVICE,
+    NOTIFICATIONS,
+    CUSTOM_PAY_COMPONENTS,
+    ASSETS,
+    PROBATION,
+    SEPARATIONS,
+    PAYROLL_SETTINGS,
+
+    // BUSINESS plan features
+    SSO,
+    API_ACCESS,
+    CUSTOM_INTEGRATIONS
+}

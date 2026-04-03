@@ -85,7 +85,7 @@ public class SubscriptionAccessFilter extends OncePerRequestFilter {
 
         if (subscription.getStatus() == SubscriptionStatus.TRIAL || subscription.getStatus() == SubscriptionStatus.EXPIRED) {
             errorCode = ErrorCodes.SUBSCRIPTION_TRIAL_EXPIRED;
-            message = "Your free trial has expired. Please subscribe to continue using HR Lite.";
+            message = "Your free trial has expired. Please subscribe to continue using PeopleLite.";
         } else if (subscription.getStatus() == SubscriptionStatus.SUSPENDED) {
             errorCode = ErrorCodes.SUBSCRIPTION_INACTIVE;
             message = "Your subscription has been suspended. Please contact support.";

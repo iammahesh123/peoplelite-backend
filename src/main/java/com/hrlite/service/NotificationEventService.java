@@ -188,7 +188,7 @@ public class NotificationEventService {
                     .tenantId(tenantId)
                     .userId(userId)
                     .type("WELCOME")
-                    .title("Welcome to HR Lite!")
+                    .title("Welcome to PeopleLite!")
                     .message("Welcome " + fullName + "! Your organization " + companyName + " is all set up.")
                     .actionUrl("/dashboard")
                     .createdAt(LocalDateTime.now())

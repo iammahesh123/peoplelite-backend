@@ -33,6 +33,16 @@ public class PayslipResponse {
     private String deductionRemarks;
     private int workingDays;
     private double lopDays;
+    private BigDecimal overtimeHours;
+    private BigDecimal overtimePay;
+    private BigDecimal totalBonus;
+    private String bonusDetails;
+    private BigDecimal lopDeduction;
+    private int daysPresent;
+    private BigDecimal loanDeduction;
+    private String loanDetails;
+    private BigDecimal totalReimbursement;
+    private String reimbursementDetails;
     private int month;
     private int year;
 }

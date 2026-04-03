@@ -98,30 +98,58 @@ public class SelfBoardingService {
     private String buildSelfBoardingEmail(String employeeName, String onboardingLink) {
         return """
             <!DOCTYPE html>
-            <html>
-            <body style="font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: #f5f7fb;">
-                <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; margin-top: 20px;">
-                    <div style="background: linear-gradient(135deg, #667eea 0%%, #764ba2 100%%); padding: 40px 30px; text-align: center; color: white;">
-                        <h1 style="margin: 0; font-size: 28px; font-weight: 300;">Welcome to the Team!</h1>
-                        <p style="margin: 10px 0 0; font-size: 16px; opacity: 0.9;">Complete your onboarding to get started</p>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width,initial-scale=1.0">
+                <title>Complete Your Onboarding</title>
+            </head>
+            <body style="margin:0;padding:0;background-color:#f0f2f5;font-family:'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+                <div style="max-width:600px;margin:0 auto;padding:24px 16px;">
+                    <!-- Header -->
+                    <div style="background:linear-gradient(135deg,#7c3aed,#6d28d9);border-radius:16px 16px 0 0;padding:32px 32px 28px;text-align:center;">
+                        <div style="width:48px;height:48px;background:rgba(255,255,255,0.2);border-radius:12px;display:inline-block;line-height:48px;margin-bottom:16px;">
+                            <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/><circle cx='8.5' cy='7' r='4'/><line x1='20' y1='8' x2='20' y2='14'/><line x1='23' y1='11' x2='17' y2='11'/></svg>
+                        </div>
+                        <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">Welcome to the Team!</h1>
+                        <p style="margin:6px 0 0;font-size:14px;color:rgba(255,255,255,0.85);font-weight:400;">Complete your onboarding to get started</p>
                     </div>
-                    <div style="padding: 30px;">
-                        <p style="font-size: 16px; color: #333;">Dear <strong>%s</strong>,</p>
-                        <p style="font-size: 14px; color: #555; line-height: 1.6;">
-                            We're excited to have you join us! Please complete your onboarding process by clicking the button below.
-                            You'll need to provide your personal information, upload required documents, and acknowledge company policies.
+                    <!-- Body Card -->
+                    <div style="background:#ffffff;padding:32px;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb;">
+                        <p style="margin:0 0 8px;font-size:15px;color:#374151;">Hello <strong>%s</strong>,</p>
+                        <p style="margin:0 0 24px;font-size:14px;color:#6b7280;line-height:1.6;">
+                            We're thrilled to have you joining us! Please complete your onboarding by clicking the button below.
                         </p>
-                        <div style="text-align: center; margin: 30px 0;">
-                            <a href="%s" style="display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 14px 40px; border-radius: 8px; font-weight: 600; font-size: 16px;">
+                        <div style="background:#f5f3ff;border-radius:12px;padding:20px 24px;margin:20px 0;">
+                            <p style="margin:0 0 14px;font-size:14px;font-weight:600;color:#5b21b6;">What you'll need to do:</p>
+                            <table style="width:100%%;border:0;border-collapse:collapse;">
+                                <tr>
+                                    <td style="padding:6px 0;font-size:13px;color:#7c3aed;vertical-align:top;width:24px;">&#10003;</td>
+                                    <td style="padding:6px 0;font-size:13px;color:#374151;">Verify your personal information</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px 0;font-size:13px;color:#7c3aed;vertical-align:top;">&#10003;</td>
+                                    <td style="padding:6px 0;font-size:13px;color:#374151;">Upload required documents</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px 0;font-size:13px;color:#7c3aed;vertical-align:top;">&#10003;</td>
+                                    <td style="padding:6px 0;font-size:13px;color:#374151;">Acknowledge company policies</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="text-align:center;margin:28px 0;">
+                            <a href="%s" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#ffffff;text-decoration:none;padding:14px 36px;border-radius:10px;font-size:15px;font-weight:600;letter-spacing:0.3px;box-shadow:0 4px 14px rgba(0,0,0,0.15);">
                                 Start Onboarding
                             </a>
                         </div>
-                        <p style="font-size: 13px; color: #888; line-height: 1.5;">
-                            This link will expire in 7 days. If you have any questions, please contact your HR team.
-                        </p>
+                        <div style="background:#fef3c7;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:12px 16px;margin:24px 0;">
+                            <p style="margin:0;font-size:12px;color:#92400e;">This link expires in <strong>7 days</strong>. If you have any questions, please contact your HR team.</p>
+                        </div>
                     </div>
-                    <div style="background: #f8f9fa; padding: 20px 30px; text-align: center; font-size: 12px; color: #999;">
-                        <p style="margin: 0;">HR Lite - Employee Self-Service Onboarding</p>
+                    <!-- Footer -->
+                    <div style="background:#f9fafb;border-radius:0 0 16px 16px;border:1px solid #e5e7eb;border-top:0;padding:24px 32px;text-align:center;">
+                        <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#6b7280;">PeopleLite</p>
+                        <p style="margin:0;font-size:11px;color:#9ca3af;">Simple HR for growing teams</p>
                     </div>
                 </div>
             </body>

@@ -30,7 +30,7 @@ public class NotificationController {
 
         UserPrincipal principal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Pageable pageable = PageRequest.of(page, size);
-        Page<NotificationResponse> notifications = notificationService.getUserNotifications(principal.getUserId(), type, pageable);
+        Page<NotificationResponse> notifications = notificationService.getUserNotifications(principal.getUserId(), type, search, pageable);
         return ResponseEntity.ok(ApiResponse.success(notifications));
     }
 

@@ -48,18 +48,55 @@ public class LeaveService {
                 .defaultBalance(request.getDefaultBalance())
                 .paid(request.isPaid())
                 .build();
-        return toLeaveTypeResponse(leaveTypeRepository.save(leaveType));
+        leaveType = leaveTypeRepository.save(leaveType);
+
+        // Auto-create balances for all existing active employees
+        UUID tenantId = TenantContext.getCurrentTenant();
+        int year = LocalDate.now().getYear();
+        List<Employee> employees = employeeRepository.findByTenantId(tenantId);
+        for (Employee emp : employees) {
+            Optional<LeaveBalance> existing = leaveBalanceRepository
+                    .findByEmployeeIdAndLeaveTypeIdAndYear(emp.getId(), leaveType.getId(), year);
+            if (existing.isEmpty()) {
+                LeaveBalance balance = LeaveBalance.builder()
+                        .employeeId(emp.getId())
+                        .leaveTypeId(leaveType.getId())
+                        .year(year)
+                        .total(leaveType.getDefaultBalance())
+                        .build();
+                leaveBalanceRepository.save(balance);
+            }
+        }
+
+        return toLeaveTypeResponse(leaveType);
     }
 
     @Transactional
     public LeaveTypeResponse updateLeaveType(UUID id, LeaveTypeRequest request) {
         LeaveType leaveType = leaveTypeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("LeaveType", id));
+
+        int oldDefaultBalance = leaveType.getDefaultBalance();
         leaveType.setName(request.getName());
         leaveType.setCode(request.getCode().toUpperCase());
         leaveType.setDefaultBalance(request.getDefaultBalance());
         leaveType.setPaid(request.isPaid());
-        return toLeaveTypeResponse(leaveTypeRepository.save(leaveType));
+        leaveType = leaveTypeRepository.save(leaveType);
+
+        // If default balance changed, update all employee balances for current year
+        if (oldDefaultBalance != request.getDefaultBalance()) {
+            int year = LocalDate.now().getYear();
+            List<LeaveBalance> balances = leaveBalanceRepository.findByLeaveTypeIdAndYear(leaveType.getId(), year);
+            for (LeaveBalance balance : balances) {
+                // Adjust total: add the difference (handles both increase and decrease)
+                double diff = request.getDefaultBalance() - oldDefaultBalance;
+                double newTotal = Math.max(balance.getUsed(), balance.getTotal() + diff);
+                balance.setTotal(newTotal);
+                leaveBalanceRepository.save(balance);
+            }
+        }
+
+        return toLeaveTypeResponse(leaveType);
     }
 
     @Transactional
@@ -93,22 +130,43 @@ public class LeaveService {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<LeaveBalanceResponse> getMyBalances(UUID employeeId) {
         int year = LocalDate.now().getYear();
         UUID tenantId = TenantContext.getCurrentTenant();
-        List<LeaveBalance> balances = leaveBalanceRepository.findByEmployeeIdAndYear(employeeId, year);
 
-        Map<UUID, LeaveType> typeMap = leaveTypeRepository.findByTenantId(tenantId).stream()
+        // Get all active leave types for this tenant
+        List<LeaveType> activeTypes = leaveTypeRepository.findByTenantIdAndActiveTrue(tenantId);
+        Map<UUID, LeaveType> typeMap = activeTypes.stream()
                 .collect(Collectors.toMap(lt -> lt.getId(), lt -> lt));
 
+        // Get existing balances
+        List<LeaveBalance> balances = leaveBalanceRepository.findByEmployeeIdAndYear(employeeId, year);
+        Set<UUID> existingTypeIds = balances.stream()
+                .map(LeaveBalance::getLeaveTypeId)
+                .collect(Collectors.toSet());
+
+        // Auto-create missing balances for any new leave types
+        for (LeaveType lt : activeTypes) {
+            if (!existingTypeIds.contains(lt.getId())) {
+                LeaveBalance newBalance = LeaveBalance.builder()
+                        .employeeId(employeeId)
+                        .leaveTypeId(lt.getId())
+                        .year(year)
+                        .total(lt.getDefaultBalance())
+                        .build();
+                balances.add(leaveBalanceRepository.save(newBalance));
+            }
+        }
+
         return balances.stream()
+                .filter(b -> typeMap.containsKey(b.getLeaveTypeId())) // only active types
                 .map(b -> {
                     LeaveType lt = typeMap.get(b.getLeaveTypeId());
                     return LeaveBalanceResponse.builder()
                             .leaveTypeId(b.getLeaveTypeId())
-                            .leaveTypeName(lt != null ? lt.getName() : "Unknown")
-                            .leaveTypeCode(lt != null ? lt.getCode() : "")
+                            .leaveTypeName(lt.getName())
+                            .leaveTypeCode(lt.getCode())
                             .total(b.getTotal())
                             .used(b.getUsed())
                             .remaining(b.getRemaining())
@@ -116,6 +174,51 @@ public class LeaveService {
                             .build();
                 })
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Allows founder to manually adjust an employee's leave balance for a specific leave type.
+     */
+    @Transactional
+    public LeaveBalanceResponse adjustBalance(UUID employeeId, UUID leaveTypeId, double newTotal) {
+        int year = LocalDate.now().getYear();
+        LeaveType leaveType = leaveTypeRepository.findById(leaveTypeId)
+                .orElseThrow(() -> new ResourceNotFoundException("LeaveType", leaveTypeId));
+
+        LeaveBalance balance = leaveBalanceRepository
+                .findByEmployeeIdAndLeaveTypeIdAndYear(employeeId, leaveTypeId, year)
+                .orElseGet(() -> {
+                    LeaveBalance nb = LeaveBalance.builder()
+                            .employeeId(employeeId)
+                            .leaveTypeId(leaveTypeId)
+                            .year(year)
+                            .total(0)
+                            .build();
+                    return leaveBalanceRepository.save(nb);
+                });
+
+        // Ensure new total is not less than already used
+        double adjustedTotal = Math.max(balance.getUsed(), newTotal);
+        balance.setTotal(adjustedTotal);
+        balance = leaveBalanceRepository.save(balance);
+
+        return LeaveBalanceResponse.builder()
+                .leaveTypeId(balance.getLeaveTypeId())
+                .leaveTypeName(leaveType.getName())
+                .leaveTypeCode(leaveType.getCode())
+                .total(balance.getTotal())
+                .used(balance.getUsed())
+                .remaining(balance.getRemaining())
+                .year(balance.getYear())
+                .build();
+    }
+
+    /**
+     * Get all employee balances for a specific employee (founder view).
+     */
+    @Transactional
+    public List<LeaveBalanceResponse> getEmployeeBalances(UUID employeeId) {
+        return getMyBalances(employeeId);
     }
 
     // --- Leave Requests ---

@@ -62,4 +62,35 @@ public class PayrollSettings extends TenantAwareEntity {
     @Column(name = "pf_employer_rate", precision = 5, scale = 2)
     @Builder.Default
     private BigDecimal pfEmployerRate = new BigDecimal("12.00");
+
+    // ── Overtime Settings ──
+    @Column(name = "overtime_enabled")
+    @Builder.Default
+    private boolean overtimeEnabled = false;
+
+    @Column(name = "overtime_multiplier", precision = 4, scale = 2)
+    @Builder.Default
+    private BigDecimal overtimeMultiplier = new BigDecimal("1.50");
+
+    @Column(name = "standard_hours_per_day", precision = 4, scale = 2)
+    @Builder.Default
+    private BigDecimal standardHoursPerDay = new BigDecimal("8.00");
+
+    // ── Professional Tax Mode ──
+    @Column(name = "pt_slab_mode")
+    @Builder.Default
+    private boolean ptSlabMode = false;
+
+    @Column(name = "pt_state")
+    private String ptState;
+
+    // ── TDS Settings ──
+    @Column(name = "tds_regime")
+    @Builder.Default
+    private String tdsRegime = "NEW";
+
+    // ── Email Payslips ──
+    @Column(name = "auto_email_payslips")
+    @Builder.Default
+    private boolean autoEmailPayslips = false;
 }

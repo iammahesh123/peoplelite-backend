@@ -49,4 +49,17 @@ public class PayrollRun extends TenantAwareEntity {
 
     @Column(name = "generated_by")
     private UUID generatedBy;
+
+    @Column(name = "approved_by")
+    private UUID approvedBy;
+
+    @Column(name = "approved_at")
+    private java.time.LocalDateTime approvedAt;
+
+    @Column(name = "reversal_reason")
+    private String reversalReason;
+
+    @Column(name = "working_days")
+    @Builder.Default
+    private int workingDays = 0;
 }

@@ -284,7 +284,23 @@ public class AuthService {
                 .fullName(fullName.trim())
                 .employeeId(user.getEmployeeId())
                 .plan(tenant.getPlan())
+                .passwordChangeRequired(user.isPasswordChangeRequired())
                 .build();
+    }
+
+    @Transactional
+    public void changePassword(UUID userId, String currentPassword, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCodes.AUTH_INVALID_CREDENTIALS, "User not found"));
+
+        if (!passwordEncoder.matches(currentPassword, user.getPasswordHash())) {
+            throw new BusinessException(ErrorCodes.AUTH_INVALID_CREDENTIALS,
+                    "Current password is incorrect", HttpStatus.BAD_REQUEST);
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+        user.setPasswordChangeRequired(false);
+        userRepository.save(user);
     }
 
     @Transactional
@@ -472,7 +488,7 @@ public class AuthService {
         passwordResetTokenRepository.save(resetToken);
 
         // Send email with reset link
-        String resetLink = "https://app.hrlite.io/reset-password?token=" + token;
+        String resetLink = "https://peoplelite.vercel.app//reset-password?token=" + token;
         String fullName = "";
         if (user.getEmployeeId() != null) {
             Employee emp = employeeRepository.findById(user.getEmployeeId()).orElse(null);

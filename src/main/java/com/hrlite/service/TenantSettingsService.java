@@ -200,44 +200,58 @@ public class TenantSettingsService {
 
         String fromName = settings.getFromName() != null
                 ? settings.getFromName()
-                : "HR Lite";
+                : "PeopleLite";
 
         String fromEmail = settings.getFromEmail() != null
                 ? settings.getFromEmail()
                 : "noreply@hrlite.io";
 
-        String subject = "HR Lite - Test Email";
+        String subject = "PeopleLite - Test Email";
 
         String htmlBody = """
             <!DOCTYPE html>
-            <html>
+            <html lang="en">
             <head>
                 <meta charset="UTF-8">
-                <style>
-                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                    .header { background-color: #0056b3; color: white; padding: 20px; text-align: center; }
-                    .content { padding: 20px; background-color: #f9f9f9; }
-                    .success-box { background-color: #d4edda; border: 1px solid #c3e6cb; padding: 15px; border-radius: 4px; margin: 20px 0; text-align: center; }
-                    .success-box p { color: #155724; margin: 5px 0; font-weight: bold; }
-                    .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
-                </style>
+                <meta name="viewport" content="width=device-width,initial-scale=1.0">
+                <title>Test Email</title>
             </head>
-            <body>
-                <div class="container">
-                    <div class="header"><h1>HR Lite</h1></div>
-                    <div class="content">
-                        <p>Hello,</p>
-                        <p>This is a test email from HR Lite.</p>
-                        <div class="success-box">
-                            <p>Your email configuration is working correctly!</p>
+            <body style="margin:0;padding:0;background-color:#f0f2f5;font-family:'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+                <div style="max-width:600px;margin:0 auto;padding:24px 16px;">
+                    <div style="background:linear-gradient(135deg,#2563eb,#1d4ed8);border-radius:16px 16px 0 0;padding:32px 32px 28px;text-align:center;">
+                        <div style="width:48px;height:48px;background:rgba(255,255,255,0.2);border-radius:12px;display:inline-block;line-height:48px;margin-bottom:16px;">
+                            <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'/><polyline points='22,6 12,13 2,6'/></svg>
                         </div>
-                        <p>If you received this email, your SMTP settings are properly configured.</p>
-                        <p><strong>SMTP Host:</strong> %s</p>
-                        <p><strong>From:</strong> %s &lt;%s&gt;</p>
+                        <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">Test Email</h1>
+                        <p style="margin:6px 0 0;font-size:14px;color:rgba(255,255,255,0.85);font-weight:400;">Email configuration check</p>
                     </div>
-                    <div class="footer">
-                        <p><strong>HR Lite - HR for Startups</strong></p>
+                    <div style="background:#ffffff;padding:32px;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb;">
+                        <p style="margin:0 0 8px;font-size:15px;color:#374151;">Hello,</p>
+                        <p style="margin:0 0 24px;font-size:14px;color:#6b7280;line-height:1.6;">
+                            This is a test email from PeopleLite.
+                        </p>
+                        <div style="text-align:center;margin:24px 0;">
+                            <div style="display:inline-block;background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-radius:12px;padding:20px 32px;border:1px solid #a7f3d0;">
+                                <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#065f46;">&#10003; Configuration Working</p>
+                                <p style="margin:0;font-size:12px;color:#059669;">Your SMTP settings are properly configured</p>
+                            </div>
+                        </div>
+                        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin:20px 0;">
+                            <table style="width:100%%;border-collapse:collapse;">
+                                <tr>
+                                    <td style="padding:12px 16px;font-size:13px;color:#6b7280;font-weight:500;border-bottom:1px solid #f3f4f6;width:140px;">SMTP Host</td>
+                                    <td style="padding:12px 16px;font-size:13px;color:#111827;font-weight:600;border-bottom:1px solid #f3f4f6;">%s</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:12px 16px;font-size:13px;color:#6b7280;font-weight:500;border-bottom:1px solid #f3f4f6;">From</td>
+                                    <td style="padding:12px 16px;font-size:13px;color:#111827;font-weight:600;border-bottom:1px solid #f3f4f6;">%s &lt;%s&gt;</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="background:#f9fafb;border-radius:0 0 16px 16px;border:1px solid #e5e7eb;border-top:0;padding:24px 32px;text-align:center;">
+                        <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#6b7280;">PeopleLite</p>
+                        <p style="margin:0;font-size:11px;color:#9ca3af;">Simple HR for growing teams</p>
                     </div>
                 </div>
             </body>

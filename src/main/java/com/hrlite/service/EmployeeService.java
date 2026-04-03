@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -94,14 +95,15 @@ public class EmployeeService {
 
         tenantRepository.save(tenant);
 
-        // Create user account for employee
-        String defaultPassword = request.getPassword() != null ? request.getPassword() : "Welcome@123";
+        // Create user account for employee with random password
+        String generatedPassword = generateSecurePassword();
         User user = User.builder()
                 .tenantId(tenantId)
                 .email(request.getEmail())
-                .passwordHash(passwordEncoder.encode(defaultPassword))
+                .passwordHash(passwordEncoder.encode(generatedPassword))
                 .role(Role.EMPLOYEE)
                 .employeeId(employee.getId())
+                .passwordChangeRequired(true)
                 .build();
         user = userRepository.save(user);
 
@@ -122,7 +124,7 @@ public class EmployeeService {
         Tenant currentTenant = tenantRepository.findById(tenantId).orElse(null);
         String companyName = currentTenant != null ? currentTenant.getName() : "";
         notificationEventService.onEmployeeCreated(tenantId, user.getId(), employee.getFullName(),
-                founderName, request.getEmail(), defaultPassword, companyName);
+                founderName, request.getEmail(), generatedPassword, companyName);
 
         return EmployeeMapper.toResponse(employee);
     }
@@ -168,5 +170,40 @@ public class EmployeeService {
         UUID tenantId = TenantContext.getCurrentTenant();
         return employeeRepository.findByIdAndTenantId(id, tenantId)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee", id));
+    }
+
+    /**
+     * Generate a secure random password (12 chars: uppercase + lowercase + digits + special).
+     */
+    private String generateSecurePassword() {
+        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lower = "abcdefghijklmnopqrstuvwxyz";
+        String digits = "0123456789";
+        String special = "@#$!%&*";
+        String all = upper + lower + digits + special;
+
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder(12);
+
+        // Guarantee at least one of each category
+        sb.append(upper.charAt(random.nextInt(upper.length())));
+        sb.append(lower.charAt(random.nextInt(lower.length())));
+        sb.append(digits.charAt(random.nextInt(digits.length())));
+        sb.append(special.charAt(random.nextInt(special.length())));
+
+        // Fill remaining 8 characters from the full set
+        for (int i = 4; i < 12; i++) {
+            sb.append(all.charAt(random.nextInt(all.length())));
+        }
+
+        // Shuffle the result so the guaranteed chars aren't always at the start
+        char[] chars = sb.toString().toCharArray();
+        for (int i = chars.length - 1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+            char tmp = chars[i];
+            chars[i] = chars[j];
+            chars[j] = tmp;
+        }
+        return new String(chars);
     }
 }

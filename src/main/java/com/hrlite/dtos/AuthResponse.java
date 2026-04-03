@@ -21,4 +21,6 @@ public class AuthResponse {
     private String fullName;
     private UUID employeeId;
     private String plan;
+    @Builder.Default
+    private boolean passwordChangeRequired = false;
 }

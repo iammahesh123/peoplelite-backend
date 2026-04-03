@@ -3,5 +3,7 @@ package com.hrlite.enums;
 public enum PayrollStatus {
     DRAFT,
     PROCESSING,
-    COMPLETED
+    REVIEW,
+    COMPLETED,
+    REVERSED
 }

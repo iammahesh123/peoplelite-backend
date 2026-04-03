@@ -64,6 +64,15 @@ public class PayrollSettingsService {
         settings.setPfEmployerEnabled(request.isPfEmployerEnabled());
         if (request.getPfEmployerRate() != null) settings.setPfEmployerRate(request.getPfEmployerRate());
 
+        settings.setOvertimeEnabled(request.isOvertimeEnabled());
+        if (request.getOvertimeMultiplier() != null) settings.setOvertimeMultiplier(request.getOvertimeMultiplier());
+        if (request.getStandardHoursPerDay() != null) settings.setStandardHoursPerDay(request.getStandardHoursPerDay());
+
+        settings.setPtSlabMode(request.isPtSlabMode());
+        if (request.getPtState() != null) settings.setPtState(request.getPtState());
+        if (request.getTdsRegime() != null) settings.setTdsRegime(request.getTdsRegime());
+        settings.setAutoEmailPayslips(request.isAutoEmailPayslips());
+
         settings = repository.save(settings);
         log.info("Payroll settings updated for tenant={}", tenantId);
         return toResponse(settings);
@@ -84,6 +93,13 @@ public class PayrollSettingsService {
                 .tdsEnabled(s.isTdsEnabled())
                 .pfEmployerEnabled(s.isPfEmployerEnabled())
                 .pfEmployerRate(s.getPfEmployerRate())
+                .overtimeEnabled(s.isOvertimeEnabled())
+                .overtimeMultiplier(s.getOvertimeMultiplier())
+                .standardHoursPerDay(s.getStandardHoursPerDay())
+                .ptSlabMode(s.isPtSlabMode())
+                .ptState(s.getPtState())
+                .tdsRegime(s.getTdsRegime())
+                .autoEmailPayslips(s.isAutoEmailPayslips())
                 .build();
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -68,6 +69,24 @@ public class LeaveController {
     public ResponseEntity<ApiResponse<List<LeaveBalanceResponse>>> getMyBalances(
             @AuthenticationPrincipal UserPrincipal principal) {
         return ResponseEntity.ok(ApiResponse.success(leaveService.getMyBalances(principal.getEmployeeId())));
+    }
+
+    @GetMapping("/balance/{employeeId}")
+    @PreAuthorize("hasRole('FOUNDER')")
+    public ResponseEntity<ApiResponse<List<LeaveBalanceResponse>>> getEmployeeBalances(
+            @PathVariable UUID employeeId) {
+        return ResponseEntity.ok(ApiResponse.success(leaveService.getEmployeeBalances(employeeId)));
+    }
+
+    @PatchMapping("/balance/{employeeId}/{leaveTypeId}")
+    @PreAuthorize("hasRole('FOUNDER')")
+    public ResponseEntity<ApiResponse<LeaveBalanceResponse>> adjustBalance(
+            @PathVariable UUID employeeId,
+            @PathVariable UUID leaveTypeId,
+            @RequestBody Map<String, Double> body) {
+        double newTotal = body.getOrDefault("total", 0.0);
+        return ResponseEntity.ok(ApiResponse.success("Balance updated",
+                leaveService.adjustBalance(employeeId, leaveTypeId, newTotal)));
     }
 
     @GetMapping("/calendar")

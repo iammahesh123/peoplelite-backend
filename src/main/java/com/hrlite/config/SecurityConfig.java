@@ -30,13 +30,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .cors()
+                .and()
+                .csrf().disable()
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/subscription/plans").permitAll()
                         .requestMatchers("/api/v1/webhooks/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/self-boarding/validate/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/self-boarding/complete/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

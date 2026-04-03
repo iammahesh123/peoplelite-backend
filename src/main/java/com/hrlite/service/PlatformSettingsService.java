@@ -138,34 +138,43 @@ public class PlatformSettingsService {
                 ? fromEmail.getSettingValue()
                 : "admin@hrlite.io";
 
-        String subject = "HR Lite Platform - Test Email";
+        String subject = "PeopleLite Platform - Test Email";
         String htmlBody = """
             <!DOCTYPE html>
-            <html>
-            <head><meta charset="UTF-8">
-            <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                .header { background-color: #1a1a2e; color: white; padding: 20px; text-align: center; }
-                .header h1 { margin: 0; font-size: 28px; }
-                .content { padding: 20px; background-color: #f9f9f9; }
-                .success-box { background-color: #d4edda; border: 1px solid #c3e6cb; padding: 15px; border-radius: 4px; margin: 20px 0; text-align: center; }
-                .success-box p { color: #155724; margin: 5px 0; font-weight: bold; }
-                .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
-            </style>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width,initial-scale=1.0">
+                <title>Test Email</title>
             </head>
-            <body>
-                <div class="container">
-                    <div class="header"><h1>HR Lite Platform</h1></div>
-                    <div class="content">
-                        <p>Hello Super Admin,</p>
-                        <p>This is a test email from the HR Lite Platform.</p>
-                        <div class="success-box">
-                            <p>Platform email configuration is working correctly!</p>
+            <body style="margin:0;padding:0;background-color:#f0f2f5;font-family:'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+                <div style="max-width:600px;margin:0 auto;padding:24px 16px;">
+                    <div style="background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:16px 16px 0 0;padding:32px 32px 28px;text-align:center;">
+                        <div style="width:48px;height:48px;background:rgba(255,255,255,0.2);border-radius:12px;display:inline-block;line-height:48px;margin-bottom:16px;">
+                            <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'/><polyline points='22,6 12,13 2,6'/></svg>
                         </div>
-                        <p>If you received this email, your platform SMTP settings are properly configured.</p>
+                        <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">Test Email</h1>
+                        <p style="margin:6px 0 0;font-size:14px;color:rgba(255,255,255,0.85);font-weight:400;">Platform email configuration check</p>
                     </div>
-                    <div class="footer"><p><strong>HR Lite Platform Admin</strong></p></div>
+                    <div style="background:#ffffff;padding:32px;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb;">
+                        <p style="margin:0 0 8px;font-size:15px;color:#374151;">Hello <strong>Super Admin</strong>,</p>
+                        <p style="margin:0 0 24px;font-size:14px;color:#6b7280;line-height:1.6;">
+                            This is a test email from the PeopleLite Platform.
+                        </p>
+                        <div style="text-align:center;margin:24px 0;">
+                            <div style="display:inline-block;background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-radius:12px;padding:20px 32px;border:1px solid #a7f3d0;">
+                                <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#065f46;">&#10003; Configuration Working</p>
+                                <p style="margin:0;font-size:12px;color:#059669;">Platform SMTP settings are properly configured</p>
+                            </div>
+                        </div>
+                        <p style="margin:16px 0 0;font-size:13px;color:#9ca3af;line-height:1.5;">
+                            If you received this email, your platform email settings are correct and operational.
+                        </p>
+                    </div>
+                    <div style="background:#f9fafb;border-radius:0 0 16px 16px;border:1px solid #e5e7eb;border-top:0;padding:24px 32px;text-align:center;">
+                        <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#6b7280;">PeopleLite</p>
+                        <p style="margin:0;font-size:11px;color:#9ca3af;">Platform Administration</p>
+                    </div>
                 </div>
             </body>
             </html>

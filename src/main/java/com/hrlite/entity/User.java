@@ -52,4 +52,8 @@ public class User extends AuditableEntity {
     @Column(name = "is_active", nullable = false)
     @Builder.Default
     private boolean active = true;
+
+    @Column(name = "password_change_required", nullable = false)
+    @Builder.Default
+    private boolean passwordChangeRequired = false;
 }

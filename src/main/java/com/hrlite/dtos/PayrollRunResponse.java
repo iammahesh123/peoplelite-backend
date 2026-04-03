@@ -26,5 +26,8 @@ public class PayrollRunResponse {
     private BigDecimal totalNet;
     private int employeeCount;
     private LocalDateTime createdAt;
+    private UUID approvedBy;
+    private LocalDateTime approvedAt;
+    private String reversalReason;
     private List<PayslipResponse> payslips;
 }

@@ -86,6 +86,48 @@ public class Payslip extends TenantAwareEntity {
     @Column(name = "pdf_storage_key")
     private String pdfStorageKey;
 
+    // ── Overtime Fields ──
+    @Column(name = "overtime_hours", precision = 6, scale = 2)
+    @Builder.Default
+    private BigDecimal overtimeHours = BigDecimal.ZERO;
+
+    @Column(name = "overtime_pay", precision = 12, scale = 2)
+    @Builder.Default
+    private BigDecimal overtimePay = BigDecimal.ZERO;
+
+    // ── Bonus Fields ──
+    @Column(name = "total_bonus", precision = 12, scale = 2)
+    @Builder.Default
+    private BigDecimal totalBonus = BigDecimal.ZERO;
+
+    @Column(name = "bonus_details")
+    private String bonusDetails;
+
+    // ── LOP Fields ──
+    @Column(name = "lop_deduction", precision = 12, scale = 2)
+    @Builder.Default
+    private BigDecimal lopDeduction = BigDecimal.ZERO;
+
+    @Column(name = "days_present")
+    @Builder.Default
+    private int daysPresent = 0;
+
+    // ── Loan/Advance Deductions ──
+    @Column(name = "loan_deduction", precision = 12, scale = 2)
+    @Builder.Default
+    private BigDecimal loanDeduction = BigDecimal.ZERO;
+
+    @Column(name = "loan_details")
+    private String loanDetails;
+
+    // ── Reimbursements ──
+    @Column(name = "total_reimbursement", precision = 12, scale = 2)
+    @Builder.Default
+    private BigDecimal totalReimbursement = BigDecimal.ZERO;
+
+    @Column(name = "reimbursement_details")
+    private String reimbursementDetails;
+
     @Column(name = "month")
     private int month;
 

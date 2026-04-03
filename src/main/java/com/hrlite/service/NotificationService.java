@@ -19,10 +19,17 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
 
-    public Page<NotificationResponse> getUserNotifications(UUID userId, String type, Pageable pageable) {
+    public Page<NotificationResponse> getUserNotifications(UUID userId, String type, String search, Pageable pageable) {
         Page<Notification> notifications;
-        if (type != null && !type.isEmpty()) {
+        boolean hasType = type != null && !type.isEmpty();
+        boolean hasSearch = search != null && !search.trim().isEmpty();
+
+        if (hasType && hasSearch) {
+            notifications = notificationRepository.findByUserIdAndTypeAndSearch(userId, type, search.trim(), pageable);
+        } else if (hasType) {
             notifications = notificationRepository.findByUserIdAndTypeOrderByCreatedAtDesc(userId, type, pageable);
+        } else if (hasSearch) {
+            notifications = notificationRepository.findByUserIdAndSearch(userId, search.trim(), pageable);
         } else {
             notifications = notificationRepository.findByUserIdOrderByCreatedAtDesc(userId, pageable);
         }

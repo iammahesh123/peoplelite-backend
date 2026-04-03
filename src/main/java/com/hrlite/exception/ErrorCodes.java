@@ -36,6 +36,26 @@ public final class ErrorCodes {
     public static final String PAYROLL_ALREADY_RUN = "PAY_002";
     public static final String PAYROLL_NO_EMPLOYEES = "PAY_003";
 
+    // Attendance
+    public static final String ATTENDANCE_ALREADY_CHECKED_IN = "ATT_001";
+    public static final String ATTENDANCE_NOT_CHECKED_IN = "ATT_002";
+
+    // Overtime
+    public static final String OVERTIME_NOT_FOUND = "OT_001";
+
+    // Bonus
+    public static final String BONUS_NOT_FOUND = "BON_001";
+
+    // Payroll Workflow
+    public static final String PAYROLL_NOT_IN_REVIEW = "PAY_004";
+    public static final String PAYROLL_CANNOT_REVERSE = "PAY_005";
+
+    // Loan
+    public static final String LOAN_NOT_FOUND = "LOAN_001";
+
+    // Reimbursement
+    public static final String REIMBURSEMENT_NOT_FOUND = "REIMB_001";
+
     // Document
     public static final String DOCUMENT_NOT_FOUND = "DOC_001";
     public static final String DOCUMENT_UPLOAD_FAILED = "DOC_002";

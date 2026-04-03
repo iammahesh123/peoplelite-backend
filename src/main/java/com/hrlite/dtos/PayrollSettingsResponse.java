@@ -31,4 +31,19 @@ public class PayrollSettingsResponse {
 
     private boolean pfEmployerEnabled;
     private BigDecimal pfEmployerRate;
+
+    // Overtime
+    private boolean overtimeEnabled;
+    private BigDecimal overtimeMultiplier;
+    private BigDecimal standardHoursPerDay;
+
+    // PT slab mode
+    private boolean ptSlabMode;
+    private String ptState;
+
+    // TDS
+    private String tdsRegime;
+
+    // Email
+    private boolean autoEmailPayslips;
 }
